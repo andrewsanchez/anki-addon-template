@@ -1,0 +1,33 @@
+name: tests
+on:
+  push:
+    branches:
+      - "main"
+  pull_request:
+
+jobs:
+  test-addon:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/setup-python@v4
+        with:
+          python-version: "3.11"
+
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Install Qt
+        uses: jurplel/install-qt-action@v3
+        with:
+          version: "6.4.2"
+          setup-python: false
+          cache: true
+
+      - name: Install deps
+        run: |
+          python -m pip install -r requirements.txt
+
+      - name: Run pytest
+        run: |
+          python -m pytest tests
